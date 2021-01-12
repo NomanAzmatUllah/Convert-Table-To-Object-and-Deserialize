@@ -1,0 +1,90 @@
+
+
+<script>
+
+
+
+
+
+<script>
+    $("#save").click(function () {
+        debugger;
+        var a = $("#name").val();
+        var b = $("#sec").val();
+        var valdt = $("#tabstudent").tableToJSON();
+        var strdata = JSON.stringify(valdt);
+        $.ajax(
+        {
+            type: 'POST',
+            dataType: 'JSON',
+            url: '/Home/GetData',
+            data: { name: a, sec: b, table: strdata },
+            success:
+                function (response)
+                {
+                    //Generate HTML table.
+                    convertJsonToHtmlTable(JSON.parse(response), $("#TableId"));
+                },
+            error:
+                function (response)
+                {
+                    alert("Error: " + response);
+                }
+        });
+    });
+</script>
+
+
+
+Add  Library  Jquery and  Json Table convert Convert to object Library to Layout Page
+
+
+
+
+
+View Page
+
+<table id="tabstudent" class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Section</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Salman</td>
+            <td>one</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<input type="text" id="name" />
+<input type="text" id="sec" />
+<input type="button" id="save" value="Save" />
+
+
+
+
+
+
+
+Action Method Controller
+
+
+
+        public ActionResult GetData(string name, string sec , string table)
+        {
+
+          JsonResult result = new JsonResult();
+          DataTable dt =  JsonConvert.DeserializeObject<DataTable>(table);
+          return View();
+        }
+
+
+
+
+
